@@ -1,0 +1,2 @@
+import train_predict;
+print(train_predict("decision_tree"));
