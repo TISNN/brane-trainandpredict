@@ -9,13 +9,18 @@ import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
-#from sklearn.externals import joblib
+import pickle
 
 def train_predict(source: str) -> str:
-    # pd.read_csv(f"/data/train.csv")
-    train = pd.read_csv(f"/data/train_traindata.csv")
-    test = pd.read_csv(f"/data/test_testdata.csv")
-    testid=pd.read_csv(f"/data/test.csv")
+    ### alterative for pytest
+    file_path = "/data"
+    if source[:3] == "py_":
+        file_path = "./data"
+        source = source[3:]
+
+    train = pd.read_csv(f"{file_path}/train_traindata.csv")
+    test = pd.read_csv(f"{file_path}/test_testdata.csv")
+    testid = pd.read_csv(f"{file_path}/test.csv")
     X = train.values[:,1:]
     y = train.values[:,0]
 
@@ -24,26 +29,26 @@ def train_predict(source: str) -> str:
         knn.fit(X, y)
         Y_pred = knn.predict(X)
         acc_knn = round(knn.score(X, y) * 100, 2)
-        #joblib.dump(knn, f"/data/knn.pkl")
+        pickle.dump(knn, open(f"{file_path}/{source}.pkl", 'wb'))
         predictions = knn.predict(test)
         PassengerId=testid['PassengerId']
         prdict_test = pd.DataFrame({"PassengerId": PassengerId, "Survived": predictions.astype(np.int32)})
-        prdict_test.to_csv(f"/data/{source}_results.csv")
+        prdict_test.to_csv(f"{file_path}/{source}_results.csv")
 
-        return "Accuracy of KNN model is "+ str(acc_knn) + " and the KNN results was saved at ./data"
+        return "Accuracy of KNN model is "+ str(acc_knn) + " and the KNN results was saved at /data"
 
     if source == "decision_tree":
         decision_tree = DecisionTreeClassifier()
         decision_tree.fit(X, y)
         Y_pred = decision_tree.predict(X)
         acc_decision_tree = round(decision_tree.score(X, y) * 100, 2)
-        #joblib.dump(decision_tree, 'decision_tree.pkl')
+        pickle.dump(decision_tree, open(f"{file_path}/{source}.pkl", 'wb'))
         predictions = decision_tree.predict(test)
         PassengerId=testid['PassengerId']
         prdict_test = pd.DataFrame({"PassengerId": PassengerId, "Survived": predictions.astype(np.int32)})
-        prdict_test.to_csv(f"/data/{source}_results.csv")
+        prdict_test.to_csv(f"{file_path}/{source}_results.csv")
 
-        return "Accuracy of decision tree model is "+ str(acc_decision_tree) + " and the decision_tree results was saved at ./data"
+        return "Accuracy of decision tree model is "+ str(acc_decision_tree) + " and the decision_tree results was saved at /data"
 
 
 if __name__ == "__main__":
