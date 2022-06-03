@@ -1,6 +1,6 @@
-[![DOI](https://zenodo.org/badge/498528068.svg)](https://zenodo.org/badge/latestdoi/498528068)
-
 # WSCBS_Assignment4b_brane_Training_Predicting
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6612444.svg)](https://doi.org/10.5281/zenodo.6612444)
 
 This implementation is the model training and evaluation part of Titanic Project ([Machine Learning from Disaster](https://www.kaggle.com/c/titanic/overview)).
 
